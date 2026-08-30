@@ -2,7 +2,7 @@
 // GOOGLE SHEETS
 // ===========================
 
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz7-GJ1zJwangUxLDPqgxDmv31pSWSNmqSEM4rot5fsHA9Lnc3dKuBE6YUKF_OvHj-a/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwkA7YL4l4YCTeLHdLbJO6u4hSqB8L5Klz5CcdEBrHxhVKqzRuI-GqkD3QmY5dP0CY/exec";
 
 
 // ===========================
