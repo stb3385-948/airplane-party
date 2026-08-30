@@ -2,8 +2,7 @@
 // GOOGLE SHEETS
 // ===========================
 
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz7-GJ1zJwangUxLDPqgxDmv31pSWSNmqSEM4rot5fsHA9Lnc3dKuBE6YUKF_OvHj-a/exec";
-
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzzkz2HhLWmt3VrFkzCrz1ArpK17LLBP-BPfTRvnW6vXxhmvOofuYgjBG4scljECThu/exec";
 
 // ===========================
 // ВЫБОР АВИАКОМПАНИИ
@@ -40,6 +39,8 @@ const popup = document.getElementById("popup");
 const ticketName = document.getElementById("ticketName");
 
 const ticketAirline = document.getElementById("ticketAirline");
+
+const ticketSeat = document.getElementById("ticketSeat");
 
 const closePopup = document.getElementById("closePopup");
 
@@ -79,7 +80,16 @@ form.addEventListener("submit", async function(e) {
     }
 
 
-    // Данные для Google Таблицы
+    // Показываем состояние загрузки
+
+    const submitButton = form.querySelector("button[type='submit']");
+
+    submitButton.disabled = true;
+
+    submitButton.textContent = "Регистрация...";
+
+
+    // Данные для Google Sheets
 
     const data = new URLSearchParams();
 
@@ -94,13 +104,11 @@ form.addEventListener("submit", async function(e) {
 
     try {
 
-        // Отправляем данные в Google Sheets
+        // Отправляем данные в Google Apps Script
 
-        await fetch(GOOGLE_SCRIPT_URL, {
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
 
             method: "POST",
-
-            mode: "no-cors",
 
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
@@ -111,11 +119,32 @@ form.addEventListener("submit", async function(e) {
         });
 
 
-        // Показываем билет
+        const result = await response.json();
+
+
+        // Показываем имя
 
         ticketName.textContent = name;
 
+        // Показываем авиакомпанию
+
         ticketAirline.textContent = airline;
+
+
+        // Показываем место
+
+        if (status === "Приду" && result.seat) {
+
+            ticketSeat.textContent = result.seat;
+
+        } else {
+
+            ticketSeat.textContent = "--";
+
+        }
+
+
+        // Показываем Boarding Pass
 
         popup.classList.add("show");
 
@@ -128,8 +157,14 @@ form.addEventListener("submit", async function(e) {
 
     }
 
-});
 
+    // Возвращаем кнопку
+
+    submitButton.disabled = false;
+
+    submitButton.textContent = "Завершить регистрацию";
+
+});
 
 // ===========================
 // ЗАКРЫТИЕ БИЛЕТА
